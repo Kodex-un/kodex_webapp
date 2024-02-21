@@ -1,0 +1,10 @@
+@import "@styles/vars";
+
+.buttonComponent {
+  &__type {
+    &_login {
+      background-color: $color-black;
+      color: $color-white;
+    }
+  }
+}
