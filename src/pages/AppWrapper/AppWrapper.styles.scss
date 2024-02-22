@@ -1,0 +1,105 @@
+@import "@styles/vars";
+
+.appWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+
+  .sidebar {
+    flex-basis: 260px;
+    display: flex;
+    flex-direction: column;
+    background-color: $color-white;
+    min-height: 100vh;
+    font-family: Dongle, sans-serif;
+    font-size: 36px;
+
+    @media (max-width: $mid-width) {
+      flex-basis: 100px;
+      font-size: 26px;
+    }
+
+    @media (max-width: $small-width) {
+      display: none;
+    }
+
+    &__logo {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      color: #000;
+      font-family: Dongle, sans-serif;
+      font-size: 54px;
+      font-style: normal;
+      font-weight: 400;
+      justify-content: center;
+      line-height: 65px;
+      margin-left: -20px;
+      margin-top: 20px;
+      margin-bottom: 30px;
+
+      @media (max-width: $mid-width) {
+        margin-left: 0;
+      }
+
+      &_name {
+        @media (max-width: $mid-width) {
+          display: none;
+        }
+      }
+    }
+
+    &__list {
+      list-style: none;
+      margin: 0;
+      padding: 0 6px;
+      display: flex;
+      flex-direction: column;
+
+      &_item {
+        margin: 6px 0;
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        position: relative;
+        font-weight: 300;
+
+        &_dot {
+          position: absolute;
+          left: 15px;
+          margin-top: 2px;
+
+          @media (max-width: $mid-width) {
+            display: none;
+          }
+        }
+
+        &.selected {
+          color: #000;
+          font-weight: 700;
+        }
+
+        &_link {
+          flex: 1;
+          display: flex;
+          padding: 5px 10px 5px 40px;
+          color: $color-black;
+          text-decoration: none;
+
+          @media (max-width: $mid-width) {
+            padding: 5px 10px;
+          }
+        }
+      }
+    }
+  }
+
+  .content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 100vh;
+    background: $color-page-bg;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  }
+}

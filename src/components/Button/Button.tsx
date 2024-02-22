@@ -4,11 +4,15 @@ type ButtonProps = {
   type?: "login" | "primary" | "secondary";
   text?: string;
   icon?: string;
+  onClick: () => void;
 };
 
-const Button = ({ type, text, icon }: ButtonProps) => {
+const Button = ({ type, text, icon, onClick }: ButtonProps) => {
   return (
-    <button className={`buttonComponent buttonComponent__type_${type}`}>
+    <button
+      onClick={onClick}
+      className={`buttonComponent buttonComponent__type_${type}`}
+    >
       {icon}
       {text}
     </button>

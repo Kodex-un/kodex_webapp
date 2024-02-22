@@ -38,6 +38,7 @@
       "@styles/*": ["src/styles/*"],
       "@stores/*": ["src/stores/*"],
       "@types": ["src/types.ts"],
+      "@config": ["src/config.ts"],
     },
   },
   "references": [{ "path": "./tsconfig.node.json" }],
