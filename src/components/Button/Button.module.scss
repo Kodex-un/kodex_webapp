@@ -1,0 +1,29 @@
+.buttonComponent {
+  border-radius: 100px;
+
+  &__type {
+    &_login {
+      background-color: $color-black;
+      color: $color-white;
+    }
+    &_primary {
+      background-color: $color-light-gray;
+      color: $color-black;
+    }
+  }
+
+  &__size {
+    &_small {
+      padding: 3px 12px;
+      font-size: 12px;
+    }
+    &_medium {
+      padding: 12px 20px;
+      font-size: 16px;
+    }
+    &_large {
+      padding: 14px 28px;
+      font-size: 18px;
+    }
+  }
+}

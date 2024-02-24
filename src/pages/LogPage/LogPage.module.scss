@@ -1,0 +1,126 @@
+.logsPage {
+  display: flex;
+  flex-direction: column;
+  font-family: Roboto, sans-serif;
+  color: $color-black;
+  height: 100vh;
+  overflow: hidden;
+  background-color: $color-page-bg-dark;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: $color-page-bg;
+
+    &_tabs {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-end;
+
+      &_tab {
+        background-color: $color-page-bg-dark;
+        padding: 20px;
+        font-size: 20px;
+        font-weight: 400;
+      }
+    }
+
+    &_filters {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-right: 16px;
+    }
+
+    &_dateRange {
+      background-color: $color-light-blue;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 6px 16px;
+    }
+
+    &_group {
+      color: #000;
+      font-size: 12px;
+      font-weight: 300;
+
+      &.selected {
+        font-weight: 700;
+      }
+    }
+  }
+
+  &__content {
+    background-color: $color-page-bg-dark;
+    overflow-y: auto;
+  }
+
+  &__footer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0;
+  }
+}
+
+//TABLE
+
+.table {
+  width: 100%;
+  border-spacing: 0;
+
+  &__th {
+    font-size: 16px;
+    font-weight: 200;
+    text-align: left;
+    padding: 16px 3px;
+    position: sticky;
+    top: 0;
+    background-color: $color-page-bg-dark;
+
+    &_code {
+      text-align: center;
+    }
+    &_content {
+      text-align: center;
+    }
+  }
+
+  &__cell {
+    font-size: 20px;
+    font-weight: 200;
+    padding: 8px 5px;
+
+    &_flex {
+      display: flex;
+    }
+
+    &_code {
+      font-weight: 700;
+      text-align: center;
+    }
+    &_reportType {
+      font-weight: 400;
+    }
+    &_transcription {
+      font-weight: 300;
+    }
+    &_moderator {
+      font-weight: 500;
+    }
+    &_action {
+      text-align: right;
+    }
+    &_content {
+      text-align: center;
+    }
+    &_status {
+      text-align: left;
+    }
+  }
+}
