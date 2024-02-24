@@ -1,9 +1,10 @@
 import styles from "./TagComponent.module.scss";
 import classNames from "classnames";
+import { LogType } from "@types";
 
 type TagProps = {
   children: string;
-  type: "approved" | "declined" | "progress";
+  type: LogType;
   size: "small" | "medium" | "large";
 };
 

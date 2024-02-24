@@ -1,5 +1,6 @@
 .buttonComponent {
   border-radius: 100px;
+  font-family: Dongle, Roboto, sans-serif;
 
   &__type {
     &_login {
@@ -14,8 +15,9 @@
 
   &__size {
     &_small {
-      padding: 3px 12px;
-      font-size: 12px;
+      padding: 0 30px;
+      font-size: 25px;
+      font-weight: 400;
     }
     &_medium {
       padding: 12px 20px;

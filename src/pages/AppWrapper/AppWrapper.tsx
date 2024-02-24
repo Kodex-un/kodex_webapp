@@ -1,4 +1,4 @@
-import "./AppWrapper.styles.scss";
+import styles from "./AppWrapper.module.scss";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { useStore } from "@nanostores/react";
 import $auth from "@stores/auth.ts";
@@ -38,22 +38,27 @@ const AppWrapper = () => {
   const { pathname } = useLocation();
   if (user) {
     return (
-      <div className="appWrapper">
-        <div className="sidebar">
-          <Link to="/" className="sidebar__logo">
+      <div className={styles.appWrapper}>
+        <div className={styles.sidebar}>
+          <Link to="/" className={styles.sidebar__logo}>
             <LogoIcon size={55} />
-            <div className="sidebar__logo_name">KODEX</div>
+            <div className={styles.sidebar__logo_name}>KODEX</div>
           </Link>
-          <ul className="sidebar__list">
+          <ul className={styles.sidebar__list}>
             {sidebarLinks.map((item) => {
               const isActive = pathname === item.path;
               return (
-                <li className={`sidebar__list_item ${isActive && "selected"}`}>
-                  <Link className="sidebar__list_item_link" to={item.path}>
+                <li
+                  className={`${styles.sidebar__list_item} ${isActive && styles.selected}`}
+                >
+                  <Link
+                    className={styles.sidebar__list_item_link}
+                    to={item.path}
+                  >
                     {item.name}
                   </Link>
                   {isActive && (
-                    <div className="sidebar__list_item_dot">
+                    <div className={styles.sidebar__list_item_dot}>
                       <ArrowRightContainedIcon size={16} />
                     </div>
                   )}
@@ -62,7 +67,7 @@ const AppWrapper = () => {
             })}
           </ul>
         </div>
-        <div className="content">
+        <div className={styles.content}>
           <Outlet />
         </div>
       </div>

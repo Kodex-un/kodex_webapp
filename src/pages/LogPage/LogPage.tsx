@@ -8,8 +8,9 @@ import { LOG_ITEM_STATUS } from "@config";
 import { useStore } from "@nanostores/react";
 import $logs, { fetchLogs } from "@stores/logs.ts";
 import { useState } from "react";
+import { LogType } from "@types";
 
-const logStatusMap = {
+const logStatusMap: { [a: number]: LogType } = {
   [LOG_ITEM_STATUS.APPROVED]: "approved",
   [LOG_ITEM_STATUS.DECLINED]: "declined",
   [LOG_ITEM_STATUS.PROGRESS]: "progress",

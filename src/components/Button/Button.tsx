@@ -7,7 +7,7 @@ type ButtonProps = {
   icon?: string;
   size?: "small" | "medium" | "large";
   onClick: () => void;
-  isLoading: boolean;
+  isLoading?: boolean;
 };
 
 const Button = ({

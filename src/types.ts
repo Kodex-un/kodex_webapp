@@ -7,11 +7,13 @@ export type Moderator = {
   name: string;
 };
 
+export type LogType = "approved" | "declined" | "progress";
+
 export type LogItem = {
   id: string;
   time: string;
   code: string;
-  type: string;
+  type: LogType;
   transcription: string;
   status: LogITemStatusProgress | LogITemStatusApproved | LogITemStatusDeclined;
   moderator: Moderator;

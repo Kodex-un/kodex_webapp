@@ -1,0 +1,104 @@
+.page {
+  color: $color-black;
+  min-height: 100vh;
+  overflow-y: auto;
+
+  &__content {
+    padding: 60px 90px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+
+    &_left {
+      flex-basis: 400px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    &_right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}
+
+.rule {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+  margin-bottom: 20px;
+
+  &.selected {
+    .rule__button {
+      background-color: $color-white;
+    }
+    .rule__div {
+      opacity: 1;
+    }
+    .rule__info {
+      opacity: 1;
+    }
+  }
+
+  &__button {
+    border-radius: 50px;
+    background-color: $color-yellow;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    box-shadow: 0 3px 10px 0 $color-black-shadow;
+    max-width: 400px;
+    cursor: pointer;
+    font-family: Roboto, sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    flex: 5;
+    height: 40px;
+    min-width: 325px;
+  }
+
+  &__div {
+    background-color: $color-light-gray;
+    height: 1px;
+    flex: 1;
+    opacity: 0;
+  }
+}
+
+.info {
+  flex: 1;
+  margin: -40px 0 0 0;
+  border-radius: 16px;
+  background-color: $color-white;
+  opacity: 1;
+  transition: opacity 300ms ease-in-out;
+
+  &.selected {
+    opacity: 1;
+  }
+
+  &_head {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    font-family: Dongle, sans-serif;
+    font-size: 36px;
+    font-weight: 400;
+
+    padding: 18px 24px 0;
+  }
+
+  &_text {
+    font-family: Roboto, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+
+    padding: 0 24px 18px;
+  }
+}
