@@ -16,7 +16,11 @@ const { v4: uuidv4 } = require("uuid");
 initializeApp();
 const db = getFirestore();
 
-export const saveUserData = functions.auth.user().onCreate(async (user) => {
+exports.getUserById = functions.https.onCall(async ({ id }) => {
+  const user = await db.doc(`users/${id}`).get();
+  return user.data();
+});
+exports.saveUserData = functions.auth.user().onCreate(async (user) => {
   const token = uuidv4();
   const timestamp = new Date().toISOString();
   const userData = {
@@ -37,8 +41,6 @@ export const saveUserData = functions.auth.user().onCreate(async (user) => {
     status: TOKEN_STATUS.ACTIVE,
     userId: user.uid,
   };
-
-  console.log("token", token, tokenData);
 
   await db.doc(`tokens/${token}`).set(tokenData);
   return db.doc(`users/${user.uid}`).set(userData);
