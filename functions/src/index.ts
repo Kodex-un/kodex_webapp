@@ -7,15 +7,39 @@
  * See a full list of supported triggers at https://firebase.google.com/docs/functions
  */
 
-import { onRequest } from "firebase-functions/v2/https";
-import * as logger from "firebase-functions/logger";
+const functions = require("firebase-functions");
+const { initializeApp } = require("firebase-admin/app");
+const { getFirestore } = require("firebase-admin/firestore");
+const { ACCOUNT_STATUS, ACCOUNT_TYPE, TOKEN_STATUS } = require("./config");
+const { v4: uuidv4 } = require("uuid");
 
-// Start writing functions
-// https://firebase.google.com/docs/functions/typescript
+initializeApp();
+const db = getFirestore();
 
-// export const helloWorld = onRequest((request, response) => {
-//   logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+export const saveUserData = functions.auth.user().onCreate(async (user) => {
+  const token = uuidv4();
+  const timestamp = new Date().toISOString();
+  const userData = {
+    email: user.email,
+    id: user.uid,
+    dateCreated: timestamp,
+    emailVerified: user.emailVerified,
+    providerId: user.providerData[0].providerId,
+    status: ACCOUNT_STATUS.ACTIVE,
+    tokens: [token],
+    type: ACCOUNT_TYPE.CUSTOMER,
+  };
 
-exports.createUser = require("./user/create-user").createUser;
+  const tokenData = {
+    dateCreated: timestamp,
+    dateExpired: null,
+    dateUpdated: timestamp,
+    status: TOKEN_STATUS.ACTIVE,
+    userId: user.uid,
+  };
+
+  console.log("token", token, tokenData);
+
+  await db.doc(`tokens/${token}`).set(tokenData);
+  return db.doc(`users/${user.uid}`).set(userData);
+});

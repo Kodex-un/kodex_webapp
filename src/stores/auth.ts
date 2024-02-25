@@ -8,4 +8,8 @@ onAuthStateChanged(auth, (user) => {
   $auth.set(user);
 });
 
+export function logOut() {
+  return auth.signOut();
+}
+
 export default $auth;

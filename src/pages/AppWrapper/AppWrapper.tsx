@@ -1,7 +1,7 @@
 import styles from "./AppWrapper.module.scss";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { useStore } from "@nanostores/react";
-import $auth from "@stores/auth.ts";
+import $auth, { logOut } from "@stores/auth.ts";
 import Login from "@pages/Login";
 import LogoIcon from "@components/icons/LogoIcon";
 import ArrowRightContainedIcon from "@components/icons/ArrowRightContained";
@@ -30,6 +30,7 @@ const sidebarLinks = [
   {
     path: "/logout",
     name: "Log Out",
+    action: logOut,
   },
 ];
 
@@ -51,12 +52,22 @@ const AppWrapper = () => {
                 <li
                   className={`${styles.sidebar__list_item} ${isActive && styles.selected}`}
                 >
-                  <Link
-                    className={styles.sidebar__list_item_link}
-                    to={item.path}
-                  >
-                    {item.name}
-                  </Link>
+                  {item.action ? (
+                    <a
+                      href={"/"}
+                      onClick={item.action}
+                      className={styles.sidebar__list_item_link}
+                    >
+                      {item.name}
+                    </a>
+                  ) : (
+                    <Link
+                      className={styles.sidebar__list_item_link}
+                      to={item.path}
+                    >
+                      {item.name}
+                    </Link>
+                  )}
                   {isActive && (
                     <div className={styles.sidebar__list_item_dot}>
                       <ArrowRightContainedIcon size={16} />

@@ -14,7 +14,9 @@ const Login = () => {
         <p className="loginPage__container_title">
           <b>Login</b> and level up your community vibe!
         </p>
-        <Button onClick={googleLogin} type="login" text={"Google"} />
+        <Button onClick={googleLogin} type="login">
+          Google
+        </Button>
       </div>
     </div>
   );

@@ -7,7 +7,6 @@ import GuidelinePage from "@pages/GuidelinePage";
 import AnalyticsPage from "@pages/AnalyticsPage";
 import AccountPage from "@pages/AccountPage";
 import APIDocPage from "@pages/APIDocPage";
-import LogOutPage from "@pages/LogOutPage";
 
 const router = createBrowserRouter([
   {
@@ -38,10 +37,6 @@ const router = createBrowserRouter([
       {
         path: "/api",
         element: <APIDocPage />,
-      },
-      {
-        path: "/logout",
-        element: <LogOutPage />,
       },
     ],
   },
