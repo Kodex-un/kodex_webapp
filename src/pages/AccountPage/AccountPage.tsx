@@ -1,8 +1,10 @@
-import React, { useEffect } from "react";
-import "./AccountPage.styles.scss";
+import { useEffect } from "react";
+import styles from "./AccountPage.module.scss";
 import { fetchUser, $user } from "@stores/auth.ts";
 import { useStore } from "@nanostores/react";
 import parseDate from "@utils/date-parse.ts";
+import InputComponent from "@components/InputComponent";
+import VerifiedIcon from "@components/icons/VerifiedIcon";
 
 const AccountPage = () => {
   const user = useStore($user);
@@ -13,21 +15,18 @@ const AccountPage = () => {
   if (!user) return null;
   const time = parseDate(user.dateCreated).format("DD/MM/YYYY");
   return (
-    <div>
+    <div className={styles.page}>
       <div>
         <strong>Registered:</strong> {time}
       </div>
-      <div>
-        <strong>Email:</strong> {user.email}
+      <div className={styles.email}>
+        <strong>Email:</strong> {user.email}{" "}
+        <VerifiedIcon verified={user.emailVerified} />
       </div>
-      <div>Email verified: {user.emailVerified ? "true" : "false"}</div>
-      <div>login provider: {user.providerId}</div>
-      <div>status: {user.status}</div>
-      <div>type: {user.type}</div>
       <div>
         <strong>API-Key:</strong>
         {user.tokens.map((token) => (
-          <input type="text" value={token} />
+          <InputComponent value={token} secured={true} width={400} />
         ))}
       </div>
     </div>

@@ -1,0 +1,21 @@
+.page {
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  @media (max-width: $mid-width) {
+    padding: 20px;
+  }
+
+  @media (max-width: $small-width) {
+    padding: 10px;
+  }
+}
+
+.email {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}

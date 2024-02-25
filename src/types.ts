@@ -1,3 +1,5 @@
+export type SizeType = "small" | "medium" | "large";
+
 export type LogITemStatusProgress = 1;
 export type LogITemStatusApproved = 2;
 export type LogITemStatusDeclined = 3;

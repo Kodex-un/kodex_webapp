@@ -1,0 +1,35 @@
+.inputContainer {
+  background-color: $color-light-gray;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 6px 12px;
+  font-family: Roboto, sans-serif;
+  gap: 6px;
+
+  .input {
+    border: none;
+    background-color: transparent;
+    font-weight: 300;
+    outline: none;
+
+    &__size {
+      &_small {
+        font-size: 16px;
+      }
+      &_medium {
+        font-size: 20px;
+      }
+      &_large {
+        font-size: 26px;
+      }
+    }
+  }
+}
+
+.iconContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
