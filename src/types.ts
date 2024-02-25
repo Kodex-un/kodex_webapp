@@ -18,3 +18,16 @@ export type LogItem = {
   status: LogITemStatusProgress | LogITemStatusApproved | LogITemStatusDeclined;
   moderator: Moderator;
 };
+
+export type UserType = {
+  id: string;
+  dateCreated: string;
+  dateUpdated: string;
+  email: string;
+  emailVerified: boolean;
+  providerId: string;
+  status: string;
+  type: string;
+  tokens: string[];
+  name: string;
+};
