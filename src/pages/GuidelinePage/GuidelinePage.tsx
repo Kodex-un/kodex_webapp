@@ -2,6 +2,7 @@ import styles from "./GuidelinePage.module.scss";
 import Button from "@components/Button";
 import classNames from "classnames";
 import { useEffect, useState } from "react";
+import FullPageComponent from "@components/FullPageComponent";
 
 const rules = [
   {
@@ -114,6 +115,9 @@ const GuidelinePage = () => {
           )}
         </div>
       </div>
+      <FullPageComponent>
+        <div>What kind of content do you want to moderate?</div>
+      </FullPageComponent>
     </div>
   );
 };

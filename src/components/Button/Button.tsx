@@ -1,11 +1,12 @@
 import styles from "./Button.module.scss";
 import classNames from "classnames";
 import { SizeType } from "@types";
+import React from "react";
 
 type ButtonProps = {
   type?: "login" | "primary" | "secondary";
   children?: string;
-  icon?: string;
+  icon?: React.ReactNode | string;
   size?: SizeType;
   onClick: () => void;
   isLoading?: boolean;

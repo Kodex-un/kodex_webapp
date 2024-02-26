@@ -2,6 +2,7 @@ import "./Login.styles.scss";
 import Button from "@components/Button";
 import LogoIcon from "@components/icons/LogoIcon";
 import { googleLogin } from "@utils/google.ts";
+import GoogleLogoIcon from "@components/icons/GoogleLogoIcon";
 
 const Login = () => {
   return (
@@ -14,7 +15,7 @@ const Login = () => {
         <p className="loginPage__container_title">
           <b>Login</b> and level up your community vibe!
         </p>
-        <Button onClick={googleLogin} type="login">
+        <Button onClick={googleLogin} type="login" icon={<GoogleLogoIcon />}>
           Google
         </Button>
       </div>

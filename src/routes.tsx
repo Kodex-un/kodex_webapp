@@ -16,7 +16,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <InitialSetup />,
+        element: <GuidelinePage />,
       },
       {
         path: "/logs",
