@@ -3,6 +3,10 @@ import Button from "@components/Button";
 import classNames from "classnames";
 import { useEffect, useState } from "react";
 import FullPageComponent from "@components/FullPageComponent";
+import Welcome from "@pages/GuidelinePage/intro/Welcome";
+import Category from "@pages/GuidelinePage/intro/Category";
+import Content from "@pages/GuidelinePage/intro/Content";
+import Community from "@pages/GuidelinePage/intro/Community";
 
 const rules = [
   {
@@ -68,6 +72,22 @@ const GuidelinePage = () => {
   const [activeRuleId, setActiveRuleId] = useState("age");
   const [rule, setRule] = useState(null);
   const [activeRuleIndex, setActiveRuleIndex] = useState(null);
+  const [introScreenIndex, setIntroScreenIndex] = useState(0);
+
+  const introScreens = [
+    {
+      element: <Welcome />,
+    },
+    {
+      element: <Category />,
+    },
+    {
+      element: <Content />,
+    },
+    {
+      element: <Community />,
+    },
+  ];
 
   useEffect(() => {
     setRule(rules.find((rule) => rule.id === activeRuleId));
@@ -116,7 +136,12 @@ const GuidelinePage = () => {
         </div>
       </div>
       <FullPageComponent>
-        <div>What kind of content do you want to moderate?</div>
+        {introScreens[introScreenIndex].element}
+        <Button onClick={() => {}}>
+          {introScreenIndex < introScreens.length - 1
+            ? `Continue (${introScreenIndex + 1}/${introScreens.length})`
+            : "Done"}
+        </Button>
       </FullPageComponent>
     </div>
   );
