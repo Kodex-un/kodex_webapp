@@ -72,7 +72,8 @@ const GuidelinePage = () => {
   const [activeRuleId, setActiveRuleId] = useState("age");
   const [rule, setRule] = useState(null);
   const [activeRuleIndex, setActiveRuleIndex] = useState(null);
-  const [introScreenIndex, setIntroScreenIndex] = useState(0);
+  const [introScreenIndex, setIntroScreenIndex] = useState(1);
+  const [showIntro, setShowIntro] = useState(true);
 
   const introScreens = [
     {
@@ -88,6 +89,15 @@ const GuidelinePage = () => {
       element: <Community />,
     },
   ];
+
+  const changeIntroPage = () => {
+    const newIndex = introScreenIndex + 1;
+    if (newIndex === introScreens.length) {
+      setShowIntro(false);
+    } else {
+      setIntroScreenIndex(newIndex);
+    }
+  };
 
   useEffect(() => {
     setRule(rules.find((rule) => rule.id === activeRuleId));
@@ -135,14 +145,18 @@ const GuidelinePage = () => {
           )}
         </div>
       </div>
-      <FullPageComponent>
-        {introScreens[introScreenIndex].element}
-        <Button onClick={() => {}}>
-          {introScreenIndex < introScreens.length - 1
-            ? `Continue (${introScreenIndex + 1}/${introScreens.length})`
-            : "Done"}
-        </Button>
-      </FullPageComponent>
+      {showIntro && (
+        <FullPageComponent>
+          <div className={styles.fullPage}>
+            {introScreens[introScreenIndex].element}
+            <Button type={"secondary"} onClick={changeIntroPage}>
+              {introScreenIndex < introScreens.length - 1
+                ? `Continue (${introScreenIndex + 1}/${introScreens.length})`
+                : "Done"}
+            </Button>
+          </div>
+        </FullPageComponent>
+      )}
     </div>
   );
 };

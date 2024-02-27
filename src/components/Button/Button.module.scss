@@ -7,15 +7,30 @@
   justify-content: center;
   outline: none;
   border: none;
+  text-align: center;
+  font-style: normal;
+  line-height: normal;
 
   &__type {
     &_login {
       background-color: $color-black;
       color: $color-white;
+      font-size: 16px;
+      font-weight: 700;
+      min-width: 310px;
+
+      &.buttonComponent__size_medium {
+        padding: 20px 20px;
+      }
     }
     &_primary {
       background-color: $color-light-gray;
       color: $color-black;
+    }
+    &_secondary {
+      background-color: $color-black;
+      color: $color-white;
+      font-weight: 300;
     }
   }
 
