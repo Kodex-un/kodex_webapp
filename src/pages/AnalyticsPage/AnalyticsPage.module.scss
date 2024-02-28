@@ -1,0 +1,76 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  font-family: Roboto, sans-serif;
+  color: $color-black;
+  padding-bottom: 40px;
+
+  &__block {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+
+    &_title {
+      font-size: 32px;
+      font-weight: 500;
+      margin: 0;
+      padding: 0 0 20px 20px;
+    }
+  }
+
+  &__content {
+    background-color: $color-white;
+    padding: 10px;
+  }
+}
+
+.logsPage {
+  &__header {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: flex-end;
+    background-color: $color-page-bg;
+    margin-bottom: 20px;
+
+    &_tabs {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-end;
+
+      &_tab {
+        background-color: $color-page-bg-dark;
+        padding: 20px;
+        font-size: 20px;
+        font-weight: 400;
+      }
+    }
+
+    &_filters {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-right: 16px;
+    }
+
+    &_dateRange {
+      background-color: $color-light-blue;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 6px 16px;
+    }
+
+    &_group {
+      color: #000;
+      font-size: 12px;
+      font-weight: 300;
+
+      &.selected {
+        font-weight: 700;
+      }
+    }
+  }
+}

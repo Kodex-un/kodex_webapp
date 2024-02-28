@@ -13,6 +13,8 @@
     min-height: 100vh;
     font-family: Dongle, sans-serif;
     font-size: 36px;
+    position: sticky;
+    top: 0;
 
     @media (max-width: $mid-width) {
       flex-basis: 100px;
