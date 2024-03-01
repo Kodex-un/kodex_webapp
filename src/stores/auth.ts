@@ -12,11 +12,10 @@ onAuthStateChanged(auth, (user) => {
   $auth.set(user);
 });
 
-export function fetchUser() {
+export function fetchUser(userId: string) {
   const getUserById = httpsCallable(functions, "getUserById");
-  getUserById({ id: $auth.value.uid }).then((result) => {
+  getUserById({ id: userId }).then((result) => {
     const user: UserType = result.data;
-    console.log("fetchUser_:21", result.data);
     $user.set(user);
   });
 }

@@ -21,6 +21,12 @@ export type LogItem = {
   moderator: Moderator;
 };
 
+export type LogsResponse = {
+  logs: LogItem[];
+  total: number;
+  offset: number;
+};
+
 export type UserType = {
   id: string;
   dateCreated: string;

@@ -7,3 +7,5 @@ export const LOG_ITEM_STATUS = {
   APPROVED: 2,
   DECLINED: 3,
 };
+
+export const LOGS_PER_PAGE = 20;

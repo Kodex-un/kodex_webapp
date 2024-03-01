@@ -1,10 +1,11 @@
 import styles from "./AppWrapper.module.scss";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { useStore } from "@nanostores/react";
-import $auth, { logOut } from "@stores/auth.ts";
+import $auth, { fetchUser, logOut, $user } from "@stores/auth.ts";
 import Login from "@pages/Login";
 import LogoIcon from "@components/icons/LogoIcon";
 import ArrowRightContainedIcon from "@components/icons/ArrowRightContained";
+import { useEffect } from "react";
 
 const sidebarLinks = [
   {
@@ -35,7 +36,14 @@ const sidebarLinks = [
 ];
 
 const AppWrapper = () => {
-  const user = useStore($auth);
+  const auth = useStore($auth);
+  const user = useStore($user);
+  useEffect(() => {
+    if (auth && auth.uid) {
+      fetchUser(auth.uid);
+    }
+  }, [auth]);
+
   const { pathname } = useLocation();
   if (user) {
     return (

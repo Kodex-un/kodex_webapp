@@ -1,6 +1,5 @@
-import { useEffect } from "react";
 import styles from "./AccountPage.module.scss";
-import { fetchUser, $user } from "@stores/auth.ts";
+import { $user } from "@stores/auth.ts";
 import { useStore } from "@nanostores/react";
 import parseDate from "@utils/date-parse.ts";
 import InputComponent from "@components/InputComponent";
@@ -8,9 +7,6 @@ import VerifiedIcon from "@components/icons/VerifiedIcon";
 
 const AccountPage = () => {
   const user = useStore($user);
-  useEffect(() => {
-    fetchUser();
-  }, []);
 
   if (!user) return null;
   const time = parseDate(user.dateCreated).format("DD/MM/YYYY");

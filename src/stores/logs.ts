@@ -1,89 +1,19 @@
 import { map } from "nanostores";
-import { LogItem } from "@types";
-const mock: LogItem[] = [
-  {
-    id: "222",
-    time: new Date().toISOString(),
-    code: "Hate",
-    type: "User",
-    transcription: "Take your shit off",
-    status: 3,
-    moderator: {
-      id: "111",
-      name: "mrWoody",
-    },
-  },
-  {
-    id: "223",
-    time: new Date().toISOString(),
-    code: "Hate",
-    type: "Appeal",
-    transcription: "Take your shit off",
-    status: 1,
-    moderator: {
-      id: "111",
-      name: "ML_Audio_123F22",
-    },
-  },
-  {
-    id: "224",
-    time: new Date().toISOString(),
-    code: "Sex",
-    type: "User",
-    transcription: "You’re orange skinned MFer",
-    status: 2,
-    moderator: {
-      id: "111",
-      name: "Jane",
-    },
-  },
-  {
-    id: "224",
-    time: new Date().toISOString(),
-    code: "Sex",
-    type: "User",
-    transcription: "You’re orange skinned MFer",
-    status: 2,
-    moderator: {
-      id: "111",
-      name: "Jane",
-    },
-  },
-  {
-    id: "224",
-    time: new Date().toISOString(),
-    code: "Sex",
-    type: "User",
-    transcription: "You’re orange skinned MFer",
-    status: 2,
-    moderator: {
-      id: "111",
-      name: "Jane",
-    },
-  },
-  {
-    id: "224",
-    time: new Date().toISOString(),
-    code: "Sex",
-    type: "User",
-    transcription: "You’re orange skinned MFer",
-    status: 2,
-    moderator: {
-      id: "111",
-      name: "Jane",
-    },
-  },
-];
+import { LogsResponse } from "@types";
+import { httpsCallable, getFunctions } from "firebase/functions";
+import { LOGS_PER_PAGE } from "@config";
+const functions = getFunctions();
 
-const $logs = map<LogItem[] | null>(mock);
+const $logs = map<LogsResponse | null>(null);
 
-export function fetchLogs() {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      $logs.set([...$logs.value, ...mock]);
-      resolve(true);
-    }, 3000);
-  });
+export function fetchLogs(token: string, offset = 0, limit = LOGS_PER_PAGE) {
+  const getLogsByToken = httpsCallable(functions, "getLogsByToken");
+  return getLogsByToken({ token, offset, limit })
+    .then((result) => {
+      const logs: LogsResponse = result.data as LogsResponse;
+      $logs.set(logs);
+    })
+    .catch((error) => console.log("fetchLogs_:14", error));
 }
 
 export default $logs;

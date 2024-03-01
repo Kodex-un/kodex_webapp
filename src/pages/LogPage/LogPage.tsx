@@ -4,11 +4,33 @@ import Button from "@components/Button";
 import classNames from "classnames";
 import SoundIcon from "@components/icons/SoundIcon";
 import parseDate from "@utils/date-parse.ts";
-import { LOG_ITEM_STATUS } from "@config";
+import { LOG_ITEM_STATUS, LOGS_PER_PAGE } from "@config";
 import { useStore } from "@nanostores/react";
 import $logs, { fetchLogs } from "@stores/logs.ts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LogType } from "@types";
+import { $user } from "@stores/auth.ts";
+
+const Pagination = ({ total, limit, index, onClick }) => {
+  const items = [];
+  const pagesCount = Math.ceil(total / limit);
+  if (pagesCount < 2) return null;
+  for (let i = 0; i < pagesCount; i++) {
+    items.push(
+      <div
+        className={classNames({
+          [styles.pagination__button]: true,
+          [styles.active]: index === i,
+        })}
+        onClick={() => onClick(i)}
+      >
+        {i + 1}
+      </div>,
+    );
+  }
+
+  return <div className={styles.pagination}>{items}</div>;
+};
 
 const logStatusMap: { [a: number]: LogType } = {
   [LOG_ITEM_STATUS.APPROVED]: "approved",
@@ -18,13 +40,16 @@ const logStatusMap: { [a: number]: LogType } = {
 
 const LogPage = () => {
   const logs = useStore($logs);
+  const user = useStore($user);
   const [isLoading, setLoading] = useState(false);
-  const loadMore = () => {
+  const [page, setPage] = useState(0);
+
+  useEffect(() => {
     setLoading(true);
-    fetchLogs().finally(() => {
+    fetchLogs(user.tokens[0], page).finally(() => {
       setLoading(false);
     });
-  };
+  }, [user, page]);
 
   return (
     <div className={styles.logsPage}>
@@ -72,70 +97,76 @@ const LogPage = () => {
             </tr>
           </thead>
           <tbody>
-            {logs.map((log) => {
-              return (
-                <tr key={log.id}>
-                  <td
-                    className={`${styles.table__cell} ${styles.table__cell_time}`}
-                  >
-                    {parseDate(log.time).format("HH:MM")}
-                  </td>
-                  <td
-                    className={`${styles.table__cell} ${styles.table__cell_code}`}
-                  >
-                    {log.code}
-                  </td>
-                  <td
-                    className={`${styles.table__cell} ${styles.table__cell_reportType}`}
-                  >
-                    {log.type}
-                  </td>
-                  <td
-                    className={`${styles.table__cell} ${styles.table__cell_transcription}`}
-                  >
-                    {log.transcription}
-                  </td>
-                  <td
-                    className={`${styles.table__cell} ${styles.table__cell_content}`}
-                  >
-                    <SoundIcon />
-                  </td>
-                  <td
-                    className={`${styles.table__cell} ${styles.table__cell_status}`}
-                  >
-                    <TagComponent
-                      type={logStatusMap[log.status]}
-                      size={"medium"}
+            {logs &&
+              logs.logs.map((log) => {
+                return (
+                  <tr key={log.id}>
+                    <td
+                      className={`${styles.table__cell} ${styles.table__cell_time}`}
                     >
-                      Declined
-                    </TagComponent>
-                  </td>
-                  <td
-                    className={`${styles.table__cell} ${styles.table__cell_moderator}`}
-                  >
-                    {log.moderator.name}
-                  </td>
-                  <td
-                    className={`${styles.table__cell} ${styles.table__cell_action}`}
-                  >
-                    <Button
-                      onClick={() => {
-                        console.log("_:126", log.id);
-                      }}
+                      {parseDate(log.time).format("HH:MM")}
+                    </td>
+                    <td
+                      className={`${styles.table__cell} ${styles.table__cell_code}`}
                     >
-                      Report Error
-                    </Button>
-                  </td>
-                </tr>
-              );
-            })}
+                      {log.code}
+                    </td>
+                    <td
+                      className={`${styles.table__cell} ${styles.table__cell_reportType}`}
+                    >
+                      {log.type}
+                    </td>
+                    <td
+                      className={`${styles.table__cell} ${styles.table__cell_transcription}`}
+                    >
+                      {log.transcription}
+                    </td>
+                    <td
+                      className={`${styles.table__cell} ${styles.table__cell_content}`}
+                    >
+                      <SoundIcon />
+                    </td>
+                    <td
+                      className={`${styles.table__cell} ${styles.table__cell_status}`}
+                    >
+                      <TagComponent
+                        type={logStatusMap[log.status]}
+                        size={"medium"}
+                      >
+                        Declined
+                      </TagComponent>
+                    </td>
+                    <td
+                      className={`${styles.table__cell} ${styles.table__cell_moderator}`}
+                    >
+                      {log.moderator.name}
+                    </td>
+                    <td
+                      className={`${styles.table__cell} ${styles.table__cell_action}`}
+                    >
+                      <Button
+                        onClick={() => {
+                          console.log("_:126", log.id);
+                        }}
+                      >
+                        Report Error
+                      </Button>
+                    </td>
+                  </tr>
+                );
+              })}
           </tbody>
         </table>
 
         <div className={styles.logsPage__footer}>
-          <Button onClick={loadMore} isLoading={isLoading}>
-            Load More
-          </Button>
+          {logs && (
+            <Pagination
+              limit={LOGS_PER_PAGE}
+              index={page}
+              total={logs.total}
+              onClick={setPage}
+            />
+          )}
         </div>
       </div>
     </div>

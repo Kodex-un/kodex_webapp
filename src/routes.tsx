@@ -1,6 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
 import ErrorPage from "./pages/ErrorPage";
-import InitialSetup from "./pages/InitialSetup";
 import AppWrapper from "./pages/AppWrapper";
 import LogPage from "@pages/LogPage";
 import GuidelinePage from "@pages/GuidelinePage";
@@ -16,7 +15,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <GuidelinePage />,
+        element: <LogPage />,
       },
       {
         path: "/logs",
