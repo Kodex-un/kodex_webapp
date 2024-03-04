@@ -22,6 +22,7 @@ module.exports = {
   ],
   plugins: ["@typescript-eslint", "import"],
   rules: {
+    "space-before-function-paren": 0,
     "object-curly-spacing": 0,
     "quote-props": 0,
     "@typescript-eslint/no-var-requires": 0,

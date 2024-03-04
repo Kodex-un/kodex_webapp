@@ -18,4 +18,13 @@ export const ACCOUNT_TYPE = {
 export const ErrorCode = {
   TOKEN_NOT_FOUND: 100,
   TOKEN_NOT_ACTIVE: 101,
+  UNSUPPORTED_REQ_TYPE: 102,
+  TOKEN_NOT_PRESENTED: 103,
+};
+
+export const REQUEST_TYPE = {
+  TEXT: "text",
+  AUDIO: "audio",
+  VIDEO: "video",
+  IMAGE: "image",
 };
