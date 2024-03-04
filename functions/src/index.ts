@@ -8,16 +8,10 @@ const {
   REQUEST_TYPE,
   ErrorCode,
 } = require("./config");
-const { v4: uuidv4 } = require("uuid");
 const { onRequest } = require("firebase-functions/v2/https");
-import multer from "multer";
+const multer = require("multer");
 const express = require("express");
-const {
-  getStorage,
-  ref,
-  getDownloadURL,
-  uploadBytesResumable,
-} = require("firebase-admin/storage");
+const { getStorage } = require("firebase-admin/storage");
 const bodyParser = require("body-parser");
 const serviceAccount = require("../kodex-un-415118-6a00a782dabf.json");
 
@@ -26,12 +20,9 @@ initializeApp({
   storageBucket: "kodex-un.appspot.com",
 });
 
-const storage = getStorage();
-
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-const upload = multer({ storage: multer.memoryStorage() });
 
 const db = getFirestore();
 
@@ -85,8 +76,9 @@ exports.getUserById = functions.https.onCall(async ({ id }: { id: string }) => {
 });
 
 exports.saveUserData = functions.auth.user().onCreate(async (user: any) => {
-  const token = uuidv4();
   const timestamp = new Date().toISOString();
+  const tokenRef = db.collection("tokens").doc();
+  const token = tokenRef.id;
   const userData = {
     email: user.email,
     id: user.uid,
@@ -107,7 +99,9 @@ exports.saveUserData = functions.auth.user().onCreate(async (user: any) => {
     token,
   };
 
-  await db.doc(`tokens/${token}`).set(tokenData);
+  console.log("_:102");
+
+  await tokenRef.set(tokenData);
   return db.doc(`users/${user.uid}`).set(userData);
 });
 
@@ -119,7 +113,7 @@ app.post("*/api/v1/moderateText", async (req: any, res: any) => {
     return res.status(400).send(JSON.stringify(token.error));
   }
 
-  await db.collection("logs").add({
+  const reqRef = await db.collection("logs").add({
     time: new Date().toISOString(),
     text: req.body.text,
     token,
@@ -134,67 +128,10 @@ app.post("*/api/v1/moderateText", async (req: any, res: any) => {
     },
   });
 
-  return res.status(200).send(JSON.stringify({ token, body: req.body }));
+  return res
+    .status(200)
+    .send(JSON.stringify({ id: reqRef.id, token, body: req.body }));
 });
-
-app.post(
-  "*/api/v1/moderateImage",
-  upload.single("image"),
-  async (req: any, res: any) => {
-    const token = await checkToken(req, REQUEST_TYPE.IMAGE);
-
-    if (token.error) {
-      return res.status(400).send(JSON.stringify(token.error));
-    }
-
-    console.log("moderateImage", req.file);
-
-    try {
-      const storageRef = ref(
-        storage,
-        `files/${req.file.originalname}_${new Date().toISOString()}_${token.token}`,
-      );
-
-      // Create file metadata including the content type
-      const metadata = {
-        contentType: req.file.mimetype,
-      };
-
-      // Upload the file in the bucket storage
-      const snapshot = await uploadBytesResumable(
-        storageRef,
-        req.file.buffer,
-        metadata,
-      );
-
-      // Grab the public url
-      const imageURL = await getDownloadURL(snapshot.ref);
-
-      await db.collection("logs").add({
-        time: new Date().toISOString(),
-        image: {
-          url: imageURL,
-          name: req.file.originalname,
-          type: req.file.mimetype,
-        },
-        token,
-        code: "Sex",
-        type: "Appeal",
-        transcription: req.body.text,
-        state: 1,
-        moderator: {
-          name: "ML_Audio_123F22",
-          type: "ML",
-          id: "moderator_id",
-        },
-      });
-
-      return res.status(200).send(JSON.stringify({ body: req.body }));
-    } catch (error: any) {
-      return res.status(400).send(error.message);
-    }
-  },
-);
 
 exports.getLogsByToken = functions.https.onCall(
   async ({
