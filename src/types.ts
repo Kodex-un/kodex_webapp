@@ -39,3 +39,28 @@ export type UserType = {
   tokens: string[];
   name: string;
 };
+
+export type CommunityType = {
+  age: number[];
+  vibe: string;
+};
+export type SettingsType = string | string[] | CommunityType;
+
+export type TokenRules = {
+  drugs: number;
+  age: number;
+  fakeInformation: number;
+  hateSpeech: number;
+  intellectualProperty: number;
+  sex: number;
+};
+
+export type TokenType = {
+  dateCreated: string;
+  dateExpired: string;
+  dateUpdated: string;
+  rules: TokenRules;
+  status: "active" | "expired" | "disabled";
+  userId: string;
+  token: string;
+};

@@ -22,7 +22,7 @@ const AccountPage = () => {
       <div>
         <strong>API-Key:</strong>
         {user.tokens.map((token) => (
-          <InputComponent value={token} secured={true} width={400} />
+          <InputComponent value={token} secured={true} width={300} />
         ))}
       </div>
     </div>

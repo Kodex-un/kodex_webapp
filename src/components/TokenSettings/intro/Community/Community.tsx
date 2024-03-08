@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Community.module.scss";
 import LogoIcon from "@components/icons/LogoIcon";
 import ReactSlider from "react-slider";
@@ -45,6 +45,12 @@ const Thumb = (props, state, isSingle) => {
 };
 
 const Community = ({ onChange }) => {
+  const [age, setAge] = useState();
+  const [vibe, setVibe] = useState();
+
+  useEffect(() => {
+    onChange({ age, vibe });
+  }, [age, vibe]);
   return (
     <div className={styles.page}>
       <div>
@@ -65,6 +71,7 @@ const Community = ({ onChange }) => {
           renderTrack={Track}
           pearling
           minDistance={10}
+          onChange={setAge}
         />
       </div>
       <div className={styles.control}>
@@ -76,6 +83,7 @@ const Community = ({ onChange }) => {
           marks
           renderThumb={(props, state) => Thumb(props, state, true)}
           renderTrack={TrackSingle}
+          onChange={setVibe}
         />
       </div>
     </div>

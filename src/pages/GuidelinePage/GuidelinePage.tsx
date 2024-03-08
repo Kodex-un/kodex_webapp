@@ -2,11 +2,6 @@ import styles from "./GuidelinePage.module.scss";
 import Button from "@components/Button";
 import classNames from "classnames";
 import { useEffect, useState } from "react";
-import FullPageComponent from "@components/FullPageComponent";
-import Welcome from "@pages/GuidelinePage/intro/Welcome";
-import Category from "@pages/GuidelinePage/intro/Category";
-import Content from "@pages/GuidelinePage/intro/Content";
-import Community from "@pages/GuidelinePage/intro/Community";
 
 const rules = [
   {
@@ -72,32 +67,6 @@ const GuidelinePage = () => {
   const [activeRuleId, setActiveRuleId] = useState("age");
   const [rule, setRule] = useState(null);
   const [activeRuleIndex, setActiveRuleIndex] = useState(null);
-  const [introScreenIndex, setIntroScreenIndex] = useState(0);
-  const [showIntro, setShowIntro] = useState(true);
-
-  const introScreens = [
-    {
-      element: <Welcome />,
-    },
-    {
-      element: <Category onChange={() => {}} />,
-    },
-    {
-      element: <Content onChange={() => {}} />,
-    },
-    {
-      element: <Community onChange={() => {}} />,
-    },
-  ];
-
-  const changeIntroPage = () => {
-    const newIndex = introScreenIndex + 1;
-    if (newIndex === introScreens.length) {
-      setShowIntro(false);
-    } else {
-      setIntroScreenIndex(newIndex);
-    }
-  };
 
   useEffect(() => {
     setRule(rules.find((rule) => rule.id === activeRuleId));
@@ -145,18 +114,6 @@ const GuidelinePage = () => {
           )}
         </div>
       </div>
-      {showIntro && (
-        <FullPageComponent>
-          <div className={styles.fullPage}>
-            {introScreens[introScreenIndex].element}
-            <Button type={"secondary"} onClick={changeIntroPage}>
-              {introScreenIndex < introScreens.length - 1
-                ? `Continue (${introScreenIndex + 1}/${introScreens.length})`
-                : "Done"}
-            </Button>
-          </div>
-        </FullPageComponent>
-      )}
     </div>
   );
 };

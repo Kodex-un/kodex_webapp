@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "./Content.module.scss";
-import LogoIcon from "@components/icons/LogoIcon";
+import LogoIcon from "../../../../components/icons/LogoIcon";
 import Audio from "./images/audio.png";
 import Image from "./images/image.png";
 import Video from "./images/video.png";

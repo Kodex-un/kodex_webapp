@@ -6,6 +6,7 @@ import Login from "@pages/Login";
 import LogoIcon from "@components/icons/LogoIcon";
 import ArrowRightContainedIcon from "@components/icons/ArrowRightContained";
 import { useEffect } from "react";
+import TokenSettings from "@components/TokenSettings";
 
 const sidebarLinks = [
   {
@@ -58,6 +59,7 @@ const AppWrapper = () => {
               const isActive = pathname === item.path;
               return (
                 <li
+                  key={item.path}
                   className={`${styles.sidebar__list_item} ${isActive && styles.selected}`}
                 >
                   {item.action ? (
@@ -89,6 +91,7 @@ const AppWrapper = () => {
         <div className={styles.content}>
           <Outlet />
         </div>
+        <TokenSettings />
       </div>
     );
   }

@@ -1,5 +1,7 @@
+import { CallableContext } from "firebase-functions/lib/common/providers/https";
+
 const functions = require("firebase-functions");
-const { initializeApp, cert } = require("firebase-admin/app");
+const { initializeApp } = require("firebase-admin/app");
 const { getFirestore } = require("firebase-admin/firestore");
 const {
   ACCOUNT_STATUS,
@@ -9,20 +11,23 @@ const {
   ErrorCode,
 } = require("./config");
 const { onRequest } = require("firebase-functions/v2/https");
-const multer = require("multer");
 const express = require("express");
-const { getStorage } = require("firebase-admin/storage");
+const ruid = require("express-ruid");
 const bodyParser = require("body-parser");
-const serviceAccount = require("../kodex-un-415118-6a00a782dabf.json");
+require("firebase-functions/logger/compat");
 
-initializeApp({
-  credential: cert(serviceAccount),
-  storageBucket: "kodex-un.appspot.com",
-});
+initializeApp();
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(express.json());
+app.use(
+  ruid({
+    prefixRoot: "",
+    prefixSeparator: "",
+  }),
+);
 
 const db = getFirestore();
 
@@ -71,9 +76,58 @@ const checkToken = async (req: any, reqType: string) => {
 };
 
 exports.getUserById = functions.https.onCall(async ({ id }: { id: string }) => {
+  console.log("_:72", id);
+  // if (!context.auth) {
+  //   throw new functions.https.HttpsError(
+  //     "unauthenticated",
+  //     "only authenticated users allowed",
+  //   );
+  // }
+
   const user = await db.doc(`users/${id}`).get();
   return user.data();
 });
+
+exports.getUserToken = functions.https.onCall(
+  async ({ tokenId }: { tokenId: string }, context: CallableContext) => {
+    if (!context.auth) {
+      throw new functions.https.HttpsError(
+        "unauthenticated",
+        "only authenticated users allowed",
+      );
+    }
+
+    const token = await db.doc(`tokens/${tokenId}`).get();
+    return token.data();
+  },
+);
+
+exports.setTokenSettings = functions.https.onCall(
+  async (
+    { tokenId, settings }: { tokenId: string; settings: any },
+    context: CallableContext,
+  ) => {
+    if (!context.auth) {
+      throw new functions.https.HttpsError(
+        "unauthenticated",
+        "only authenticated users allowed",
+      );
+    }
+
+    console.log("_:87");
+    const rules = {
+      drugs: 0,
+      age: settings.community.age,
+      fakeInformation: 0,
+      hateSpeech: 0,
+      intellectualProperty: 0,
+      sex: 0,
+    };
+
+    const token = await db.doc(`tokens/${tokenId}`).update({ rules });
+    return token.data();
+  },
+);
 
 exports.saveUserData = functions.auth.user().onCreate(async (user: any) => {
   const timestamp = new Date().toISOString();
@@ -99,24 +153,28 @@ exports.saveUserData = functions.auth.user().onCreate(async (user: any) => {
     token,
   };
 
-  console.log("_:102");
-
   await tokenRef.set(tokenData);
   return db.doc(`users/${user.uid}`).set(userData);
 });
 
-app.use(express.json());
+app.get("*/api/v1/moderateText", async (req: any, res: any) => {
+  console.log("I am a log entry!");
+  return res.status(200).send(JSON.stringify({ state: "approved" }));
+});
+
 app.post("*/api/v1/moderateText", async (req: any, res: any) => {
   const token = await checkToken(req, REQUEST_TYPE.TEXT);
 
   if (token.error) {
+    console.log("I am a log entry!");
     return res.status(400).send(JSON.stringify(token.error));
   }
 
-  const reqRef = await db.collection("logs").add({
+  await db.collection("logs").add({
+    rid: req.rid,
     time: new Date().toISOString(),
     text: req.body.text,
-    token,
+    token: token.token,
     code: "Sex",
     type: "Appeal",
     transcription: req.body.text,
@@ -128,21 +186,29 @@ app.post("*/api/v1/moderateText", async (req: any, res: any) => {
     },
   });
 
-  return res
-    .status(200)
-    .send(JSON.stringify({ id: reqRef.id, token, body: req.body }));
+  return res.status(200).send(JSON.stringify({ state: "approved" }));
 });
 
 exports.getLogsByToken = functions.https.onCall(
-  async ({
-    token,
-    offset = 0,
-    limit = 20,
-  }: {
-    token: string;
-    offset?: number;
-    limit?: number;
-  }) => {
+  async (
+    {
+      token,
+      offset = 0,
+      limit = 20,
+    }: {
+      token: string;
+      offset?: number;
+      limit?: number;
+    },
+    context: CallableContext,
+  ) => {
+    if (!context.auth) {
+      throw new functions.https.HttpsError(
+        "unauthenticated",
+        "only authenticated users allowed",
+      );
+    }
+
     const logsRef = db.collection("logs");
     const total = await logsRef.count().get();
 
