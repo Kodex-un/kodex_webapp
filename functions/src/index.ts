@@ -158,7 +158,7 @@ exports.saveUserData = functions.auth.user().onCreate(async (user: any) => {
 });
 
 app.get("*/api/v1/moderateText", async (req: any, res: any) => {
-  console.log("I am a log entry!");
+  console.log("I am a log entry!", req);
   return res.status(200).send(JSON.stringify({ state: "approved" }));
 });
 
