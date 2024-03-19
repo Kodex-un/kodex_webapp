@@ -1,6 +1,6 @@
-import functions from "firebase-functions";
+const functions = require("firebase-functions");
 import { CallableContext } from "firebase-functions/lib/common/providers/https";
-import { getFirestore } from "firebase-admin/lib/firestore";
+const { getFirestore } = require("firebase-admin/firestore");
 
 const db = getFirestore();
 
@@ -29,7 +29,7 @@ exports.setTokenSettings = functions.https.onCall(
     return tokenRef
       .update({ rules })
       .then(() => true)
-      .catch((error) => {
+      .catch((error: any) => {
         console.error("ERROR in setTokenSettings", error);
         return false;
       });

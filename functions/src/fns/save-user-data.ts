@@ -1,6 +1,6 @@
-import functions from "firebase-functions";
 import { ACCOUNT_STATUS, ACCOUNT_TYPE, TOKEN_STATUS } from "../config";
-import { getFirestore } from "firebase-admin/lib/firestore";
+const functions = require("firebase-functions");
+const { getFirestore } = require("firebase-admin/firestore");
 
 const db = getFirestore();
 
