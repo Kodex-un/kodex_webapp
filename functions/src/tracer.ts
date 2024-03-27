@@ -37,4 +37,4 @@ const sdk = new NodeSDK({
 });
 sdk.start();
 
-exports.tracer = opentelemetry.trace.getTracer("basic");
+export default opentelemetry.trace.getTracer("basic");

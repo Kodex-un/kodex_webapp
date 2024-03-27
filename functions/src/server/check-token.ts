@@ -56,4 +56,4 @@ const checkToken = async (req: any, reqType: string) => {
   return Object.assign(savedToken, { token });
 };
 
-exports.checkToken = checkToken;
+export default checkToken;

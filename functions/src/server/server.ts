@@ -6,10 +6,15 @@ const ruid = require("express-ruid");
 const bodyParser = require("body-parser");
 const { getFirestore } = require("firebase-admin/firestore");
 const db = getFirestore();
+const { fileHandler, FILE_TYPES } = require("./file-handler");
 
 const server = express();
-server.use(bodyParser.urlencoded({ extended: false }));
 server.use(bodyParser.json());
+server.use(
+  bodyParser.urlencoded({
+    extended: false,
+  }),
+);
 server.use(express.json());
 server.use(
   ruid({
@@ -18,22 +23,38 @@ server.use(
   }),
 );
 
+server.post(
+  "*/api/v1/moderateAudio",
+  fileHandler({ types: [FILE_TYPES.AUDIO] }),
+  async (req: any, res: any) => {
+    console.log(
+      "_:39",
+      req.body.fileUrl,
+      req.body.fileName,
+      req.body.mimeType,
+      req.body.error,
+    );
+    return res.status(200).send(JSON.stringify({ state: "uploaded" }));
+  },
+);
+
 server.post("*/api/v1/moderateText", async (req: any, res: any) => {
-  const span = tracer.startSpan("foo");
+  const span = tracer.startSpan("moderateText");
   span.setAttribute("key2222", "value2222");
   span.addEvent("invoking work22222");
-  span.end();
   const token = await checkToken(req, REQUEST_TYPE.TEXT);
 
   if (token.error) {
-    return res.status(400).send(JSON.stringify(token.error));
+    const errorStr = JSON.stringify(token.error);
+    span.setAttribute("error", errorStr);
+    return res.status(400).send(errorStr);
   }
 
-  await db.collection("logs").add({
+  const result = {
     rid: req.rid,
     time: new Date().toISOString(),
     text: req.body.text,
-    // token: token.token,
+    token: token.token,
     code: "Sex",
     type: "Appeal",
     transcription: req.body.text,
@@ -43,7 +64,15 @@ server.post("*/api/v1/moderateText", async (req: any, res: any) => {
       type: "ML",
       id: "moderator_id",
     },
+  };
+
+  await db.collection("logs").add(result);
+
+  Object.entries(result).map((entry) => {
+    span.setAttribute(...entry);
   });
+  span.end();
+
   return res.status(200).send(JSON.stringify({ state: "approved" }));
 });
 
