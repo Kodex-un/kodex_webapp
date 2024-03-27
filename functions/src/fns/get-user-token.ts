@@ -1,13 +1,10 @@
 const functions = require("firebase-functions");
-const {
-  CallableContext,
-} = require("firebase-functions/lib/common/providers/https");
 const { getFirestore } = require("firebase-admin/firestore");
 
 const db = getFirestore();
 
 exports.getUserToken = functions.https.onCall(
-  async ({ tokenId }: { tokenId: string }, context: typeof CallableContext) => {
+  async ({ tokenId }: { tokenId: string }, context: any) => {
     if (!context.auth) {
       throw new functions.https.HttpsError(
         "unauthenticated",

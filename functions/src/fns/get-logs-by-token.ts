@@ -1,7 +1,4 @@
 const functions = require("firebase-functions");
-const {
-  CallableContext,
-} = require("firebase-functions/lib/common/providers/https");
 const { getFirestore } = require("firebase-admin/firestore");
 
 const db = getFirestore();
@@ -17,7 +14,7 @@ exports.getLogsByToken = functions.https.onCall(
       offset?: number;
       limit?: number;
     },
-    context: typeof CallableContext,
+    context: any,
   ) => {
     if (!context.auth) {
       throw new functions.https.HttpsError(
